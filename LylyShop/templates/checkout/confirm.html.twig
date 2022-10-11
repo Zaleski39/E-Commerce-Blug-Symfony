@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Valider la commande{% endblock %}
+
+{% block scriptStripe %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock scriptStripe %}
+
+{% block body %}
+
+    {{ include("partials/title_section.html.twig", {'name':'Valider la commande'}) }}
+
+    <div class="section checkout">
+        <div class="container ">
+            {{form_start(checkout, {action: path('checkout_confirm')})}}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="heading_s1" >
+                        <div class="container">
+                            <div class="medium_divider"></div>
+                            <div class="divider center_icon"><i class="ti-home"></i></div>
+                            <div class="medium_divider"></div>
+                        </div> 
+
+                            <h4 class="titrePageCommande mb-4">Merci de vérifier votre adresse</h4>
+                            <div class="content descriptionConfirmationCommande" id="adress">
+                                {{ address | replace({'[spr]' : '<br>'}) | raw }}
+                                <a href="{{ path('address_edit', {'id': address.id}) }}" class="btn btn-fill-out  mt-5">Modifier l'adresse</a>
+                                <a href="{{ path('checkout_edit') }}" class="btn btn-fill-out mt-5">Changer d'adresse</a>
+                            </div>
+                    </div>
+
+                    {% if informations %}
+                        <div class="heading_s1">
+                            <div class="container">
+                                <div class="medium_divider"></div>
+                                <div class="divider center_icon"><i class="ti-info-alt"></i></div>
+                                <div class="medium_divider"></div>
+                            </div>   
+                            <h4 class="titrePageCommande mb-4">Merci de vérifier vos informations Complémentaires</h4>
+                            <div class="content descriptionConfirmationCommande" id="informations">
+                                {{ informations }}
+                            </div>
+                        </div>                    
+                    {% endif %}
+            </div>
+
+            <div class="col-md-6">
+                    <div class="heading_s1">
+                        <div class="container">
+                            <div class="medium_divider"></div>
+                            <div class="divider center_icon"><i class="ti-truck"></i></div>
+                        <div class="medium_divider"></div>
+                        <h4 class="titrePageCommande mb-4">Merci de vérifier votre transporteur</h4>
+                        <div class="content descriptionConfirmationCommande" id="carrier">
+                                {{ carrier | replace({'[spr]' : '<br>'}) | raw }}
+                                <a href="{{ path('checkout_edit') }}" class="btn btn-fill-out mt-1 mb-5 mt-5">Changer de livraison</a>
+                        </div>
+                    </div>
+
+
+
+                    <div class="order_review">
+                        <div class="heading_s1">
+                            <h4 class="titrePageCommande">Votre commande</h4>
+                        </div>
+                        <div class="table-responsive order_table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Produits</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for element in cart.products %}
+                                        <tr>
+                                            <td> {{element.product.name}} <span class="product-qty">x {{element.quantity}}</span></td>
+                                            <td>{{((element.product.price/100) * element.quantity)  | number_format(2, '.', ' ') }} €</td>
+                                        </tr>
+                                        
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total HT</th>
+                                        <td class="product-subtotal">{{cart.data.subTotalHT | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Taxe</th>
+                                        <td class="product-subtotal">{{cart.data.taxe | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Livraison ( {{carrier.name}} )</th>
+                                        <td class="product-subtotal">{{ (carrier.price/100) | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total TTC</th>
+                                        <td class="product-subtotal">{{(cart.data.subTotalTTC + carrier.price/100) | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="payment_method">
+                            <div class="heading_s1">
+                                <h4>Paiement</h4>
+                            </div>
+                            <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Payer</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+            var stripe = Stripe("pk_test_51KWdtPJPOVaSXgzdOI23TZ1NY4l34MYe1tOEbZttVz9FyPNMxdBJAITjyvyf1kaRSIpMCATmao3Oq2jAwkJxQKKN00vRUU4ruC");
+        var checkoutButton = document.getElementById("checkout-button");
+
+        checkoutButton.addEventListener("click", function () {
+            //alert('click');
+            fetch("/create-checkout-session/{{ reference }}", {
+                method: "POST",
+            })
+            .then(function (response) {
+                return response.json();
+                // alert('1');
+            })
+            .then(function (session) {
+                // alert('2');
+                return stripe.redirectToCheckout({ sessionId: session.id });
+            })
+            .then(function (result) {
+                // alert('3');
+                // If redirectToCheckout fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using error.message.
+                if (result.error) {
+                    alert(result.error.message);
+            }
+            })
+            .catch(function (error) {
+            console.error("Error:", error);
+            });
+        });
+    </script>
+{% endblock javascripts %}
+
+
+
+
+

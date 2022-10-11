@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog Lyly{% endblock %}
+
+{% block body %}
+
+    {{ include("partials/title_section.html.twig", {'name':'Blog'}) }}
+
+{# <div class="container">
+    <div class="medium_divider"></div>
+    <div class="divider center_icon"><i class="ti-user"></i></div>
+    <div class="medium_divider"></div>
+</div> #}
+
+<div class="container">
+
+        <div class="row blockPresentationLyly m-5">
+            <div class="col-6 photoLyly">
+                <img class="card-img-top photoLyly" src="/assets/images/lyly3.jpg" alt="Photo Lyly" >
+            </div>
+            <div class="col-6 descritionLyly">
+                <h2 class="titreLyly">Bienvenue sur mon Blog !</h2>
+                <p class="paragrapheLyly">Que tu sois arrivé ici de manière avisé, ou totalement par hasard,  laisse-moi faire les présentations.  Je m’appelle Lydia. J’ai 39 ans, 2 enfants et… une très légère addiction aux tissus. J’aime beaucoup échanger sur les manières de faire, alors j’ai ouvert ce blog, afin de montrer que la couture est accessible à toutes et à tous ! Ce blog n’est pas mon métier, mais une passion, un hobby, un passe-temps.
+                </p>
+                    <strong>
+                    Et tout cela dépend de mon Mojo du moment !
+                    </strong> 
+                <p class="paragrapheLyly">
+                En réalité, je suis passionné de textile et de couture. Je fais tout mon possible afin d’expliquer au grand public, tout ce qu’il est nécessaire de savoir sur les textiles. Merci à vous
+                </p>
+            </div>
+        </div>
+</div>
+
+    {# Blog #}
+<div class="container">
+    <div class="row md-5">
+            <div class="col-md-12">
+                    {% for article in articles %}
+
+                    <div class="medium_divider"></div>
+                    <div class="divider center_icon"><i class="ti-slice"></i></div>
+                    <div class="medium_divider"></div>
+                
+                            <div class="row m-5 blogContainer">
+
+                                <div class="col-12 col-md-6 m-0 BlockPhotoBlog">
+                                    <img class="card-img-top photoBlog" src="/assets/uploads/blog/{{ article.image }}" alt="{{ article.title }}" >
+                                </div>
+
+                                <div class="col-6 BlockDescriptionBlog">
+
+                                        <h5 class="card-title titreBlog">  <i> {{ article.title }}  </i> </h5>
+
+                                        <p class="descriptionBlog"> {{ article.description | raw }}</p>
+
+                                        <div class="BlockboutonBlog">
+                                            <a href=" {{ path ('show',{'id':article.id}) }}" class="btn btn-fill-out-effet btn-addtocart btn-block  boutonBlog">En savoir plus</a>
+                                        </div>
+
+                                </div>
+
+                            </div>
+                    {% endfor %}   
+            </div>
+
+            {# Affichae Categories #}
+            {# <div class="col-md-2 mt-5">
+                <a class="text-decoration-none" href="{{ path ('home') }}"> 
+                    <h2 class="titreCategories">Categories</h2>
+                </a>
+                    <ul class="list-group">
+                {% for categorie in categories %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center"> 
+                            <a class="text-decoration-none titreCategorie" href="{{ path('showArticle', {'id':categorie.id}) }}"> 
+                                {{ categorie.title }} 
+                            </a>
+                           
+                            <a class="text-decoration-none" href="{{ path('showArticle', {'id':categorie.id}) }}">
+                                <span class="badge bg-primary rounded-pill essai258"> {{ categorie.articles | length }} 
+                                    {% if categorie.articles | length <= 1 %}
+                                        article 
+                                            {% else %}                   
+                                        articles
+                                    {% endif %}                 
+                                </span>
+                            </a> 
+                        </li>
+                {% endfor %}
+                    </ul>
+            </div> #}
+    </div>
+</div>
+{% endblock %}

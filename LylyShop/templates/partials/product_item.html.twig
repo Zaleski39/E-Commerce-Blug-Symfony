@@ -1,0 +1,44 @@
+
+{# Affichage Produit Similaire #}
+
+{% if product.quantity > 0 %}
+    <div class="item">
+        <div class="product">
+            <div class="product_img">
+                <a href="">
+                    <img class="photoProduits" src="/assets/uploads/products/{{ product.image }}" alt="{{ product.name }}">
+                </a>
+                <div class="product_action_box">
+                    <ul class="list_none pr_action_btn">
+                        <li class="add-to-cart"><a href="{{ path('cart_add', {'id':product.id})}} "><i class="icon-basket-loaded"></i> Ajouter au panier</a></li>
+                        {# <li><a href=""><i class="icon-shuffle"></i></a></li> #}
+                        <li><a href=" {{ path("product_details", {'slus': product.slus}) }}" class=""><i class="icon-magnifier-add"></i></a></li>
+                        {# <li><a href="#"><i class="icon-heart"></i></a></li> #}
+                    </ul>
+                </div>
+            </div>
+            <div class="product_info">
+                <h6 class="product_title"><a href="{{ path('product_details', {'slus': product.slus}) }}">{{ product.name }}</a></h6>
+                <div class="product_price">
+                    <span class="price">{{ ((product.price/100) + (product.price/100) * 0.2) | number_format(2, '.', ' ') }} €</span>
+                    {% if product.reduction > 0 %}
+                        <del>{{ (((product.price/100) + (product.price/100) * 0.2) + (((product.price/100) + (product.price/100) * 0.2 ) * product.reduction / 100) ) | number_format(2, '.', ' ') }} €</del>
+                        <div class="on_sale">
+                            <span>{{ product.reduction }}% de réduction</span>
+                        </div>
+                    {% endif %}
+                </div>
+                {# <div class="rating_wrap">
+                    <div class="rating">
+                        <div class="product_rate" style="width:80%"></div>
+                    </div>
+                    <span class="rating_num">(21)</span>
+                </div> #}
+                <div class="pr_desc">
+                    <p>{{ product.description }}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande payée{% endblock %}
+
+{% block body %}
+
+    {{ include("partials/title_section.html.twig", {'name':'Commande payée'}) }}
+
+        <div class="section checkout">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="text-center order_complete">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="heading_s1">
+                            <h3>Merci {{ order.user.firstname }} {{ order.user.lastname }} pour votre commande !</h3>
+                            <div class="mt-5">
+                                <div class="mt-5">Le paiment pour le numéro de commande <strong>{{ order.reference }}</strong>  a été accepté.</div>
+                                <div class="mt-5">Votre paiement est actuellement "en attente de vérification".
+                                     Les paiements sont généralement vérifiés dans la journée qui suit.
+                                     Après vérification, nous commencerons à traiter votre commande.
+                                     Pendant ce laps de temps, vous ne pourrez pas modifier votre commande.</div>
+                                <div>
+                                <div class="mt-5 mb-5">Nous vous remercions de votre commande! Votre commande est en cours de traitement et sera complétée dans les 3 à 6 heures. Vous recevrez un e-mail de confirmation lorsque votre commande sera terminée.</div>
+                                <a href="{{ path('home') }}" class="btn btn-fill-out">Continuer vos achats</a>
+                                </div>
+                            </div>
+                            <div >
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+{% endblock %}

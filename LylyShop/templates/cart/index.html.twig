@@ -1,0 +1,138 @@
+{# Panier #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier ZaleskiShop{% endblock %}
+
+{% block body %}
+    {{ include("partials/title_section.html.twig", {'name':'Panier'}) }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="medium_divider"></div>
+                <div class="divider center_icon"><i class="ti-shopping-cart-full"></i></div>
+                <div class="medium_divider"></div>
+            </div>
+        </div>
+    </div>
+    
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive shop_cart_table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Produits</th>
+                                        <th class="product-price">Prix</th>
+                                        <th class="product-quantity">Quantité</th>
+                                        <th class="product-subtotal">Total</th>
+                                        <th class="product-remove">Retirer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for element in cart.products %}
+                                        <tr>
+                                                <td class="product-thumbnail"><a href="#"><img src="/assets/uploads/products/{{element.product.image}}" alt="{{element.product.name}}"></a></td>
+                                                <td class="product-name" data-title="Product"><a href="">{{element.product.name}}</a></td>
+                                                <td class="product-price" data-title="Price">{{ (element.product.price/100)  | number_format(2, '.', ' ') }} €</td>
+                                                <td class="product-quantity" data-title="Quantity"><div class="quantity">
+                                                <a href="{{ path('cart_delete', {'id': element.product.id}) }}" type="button" value="-" class="minus"> - </a>
+                                                <input type="text" name="quantity" value="{{element.quantity}}" title="Qty" class="qty" size="4">
+                                                {# Permet d'afficher le bouton + si laquantité en stock est > à la quantité demandée #}
+                                                {% if element.quantity < element.product.quantity %}
+                                                    <a href="{{ path('cart_add', {'id': element.product.id}) }}" type="button" value="+" class="plus"> + </a>
+                                                {% endif %}
+
+
+                                            </div></td>
+                                                <td class="product-subtotal" data-title="Total">{{(element.quantity * element.product.price/100)  | number_format(2, '.', ' ')  }} €</td>
+                                                <td class="product-remove" data-title="Remove"><a href="{{ path('cart_delete_all', {'id': element.product.id}) }}"><i class="ti-close"></i></a></td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    {# <tr>
+                                        <td class="product-thumbnail"><a href="#"><img src="http://placehold.it/300" alt="product1"></a></td>
+                                        <td class="product-name" data-title="Product"><a href="#">Blue Dress For Woman</a></td>
+                                        <td class="product-price" data-title="Price">$45.00</td>
+                                        <td class="product-quantity" data-title="Quantity"><div class="quantity">
+                                        <input type="button" value="-" class="minus">
+                                        <input type="text" name="quantity" value="2" title="Qty" class="qty" size="4">
+                                        <input type="button" value="+" class="plus">
+                                    </div></td>
+                                        <td class="product-subtotal" data-title="Total">$90.00</td>
+                                        <td class="product-remove" data-title="Remove"><a href="#"><i class="ti-close"></i></a></td>
+                                    </tr> #}
+                                
+                                </tbody>
+                                {# <tfoot>
+                                <tr>
+                                        <th class="product-thumbnail">&nbsp;</th>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-subtotal">Total</th>
+                                        <th class="product-remove">Remove</th>
+                                    </tr>
+                                </tfoot> #}
+                            </table>
+                            
+                        </div>
+                    </div>
+                    <div class="boutonRetourBoutique">
+                        <a href=" {{ path ('shop') }}" class="btn btn-fill-out m-5">Continuer mes achats</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-shopping-cart-full"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border p-3 p-md-4">
+                            <div class="heading_s1 mb-3">
+                                <h6>Total Panier</h6>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="cart_total_label">Total du panier HT</td>
+                                            <td class="cart_total_amount"> {{ (cart.data.subTotalHT)  | number_format(2, '.', ' ') }} €</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Taxe (20%)</td>
+                                            <td class="cart_total_amount"> {{ (cart.data.taxe) | number_format(2, '.', ' ')}} €</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Expédition</td>
+                                            <td class="cart_total_amount">Livraison gratuite</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Total TTC</td>
+                                
+                                            <td class="cart_total_amount"><strong>{{ (cart.data.subTotalTTC) | number_format(2, '.', ' ') }} €</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a href=" {{ path('checkout') }}" class="btn btn-fill-out">Passer à la commande</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+{% endblock %}

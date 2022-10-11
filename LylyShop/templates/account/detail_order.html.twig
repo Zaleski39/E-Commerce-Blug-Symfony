@@ -1,0 +1,97 @@
+{# ================================================================================================================= #}
+{#                                               Page détail commande                                                #}
+{# ================================================================================================================= #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %} Détail Commande{% endblock %}
+
+{% block body %}
+
+{{ include("partials/title_section.html.twig", {'name':'Détail de commande'}) }}
+
+
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive shop_cart_table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">id</th>
+                                        <th class="product-name">Produits</th>
+                                        <th class="product-price">Prix</th>
+                                        <th class="product-quantity">Quantité</th>
+                                        <th class="product-subtotal">Total HT</th>
+                                        <th class="product-subtotal">Taxe</th>
+                                        <th class="product-subtotal">Total TTC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for element in order.orderDetails %}
+                                        <tr>
+                                                <td class="product-thumbnail"> {{ element.id }}</td>
+                                                <td class="product-name" data-title="Product"><a href="">{{element.productName}}</a></td>
+                                                <td class="product-price" data-title="Price">{{ (element.productPrice)  | number_format(2, '.', ' ') }} €</td>
+                                                <td class="product-quantity" data-title="Quantity"> {{ element.quantity }} </td>
+                                                <td class="product-subtotal" data-title="Total">{{(element.subTotalHT)  | number_format(2, '.', ' ')  }} €</td>
+                                                <td class="product-subtotal" data-title="Total">{{(element.taxe)  | number_format(2, '.', ' ')  }} €</td>
+                                                <td class="product-subtotal" data-title="Total">{{(element.subTotalTTC)  | number_format(2, '.', ' ')  }} €</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-shopping-cart-full"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="border p-3 p-md-4">
+                            <div class="heading_s1 mb-3">
+                                <h6 class="titrePageDetailCommande">Total Commande</h6>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td class="cart_total_label">Total de la commande HT</td>
+                                            <td class="cart_total_amount"> {{ (order.subTotalHT/100)  | number_format(2, '.', ' ') }} €</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Taxe (20%)</td>
+                                            <td class="cart_total_amount"> {{ (order.taxe/100) | number_format(2, '.', ' ')}} €</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Expédition</td>
+                                            <td class="cart_total_amount">Livraison gratuite</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Total TTC</td>
+                                
+                                            <td class="cart_total_amount"><strong>{{ (order.subTotalTTC/100) | number_format(2, '.', ' ') }} €</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <a href=" {{ path('account') }}" class="btn btn-fill-out btn-block">Retour au compte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

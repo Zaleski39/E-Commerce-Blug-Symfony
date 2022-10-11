@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier ZaleskiShop{% endblock %}
+
+{% block body %}
+
+    {{ include("partials/title_section.html.twig", {'name':'Blog'}) }}
+    
+    <div class="container">
+            <h1 class="title my-4"> {{ article.title }}  </h1>
+        <div class="img-fluid">
+            <img width="100%" src="/assets/uploads/blog/{{ article.image }}" alt="{{ article.title }}"/>
+        </div>
+        <div class="content">
+            <p class="date my-4"> Ecrit le {{ article.createdAt | date("d/m/Y")  }} à {{ article.createdAt | date("H:i")  }} </p>
+            <p class="content">
+                {{ article.content | raw }}
+            </p>
+        </div>
+        <div>
+            <a href=" {{ path ('blog') }}" class="btn btn-fill-out btn-addtocart btn-block m-5">Retour au Blog</a>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

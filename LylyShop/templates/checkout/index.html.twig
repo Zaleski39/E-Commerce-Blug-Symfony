@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Passage de commande{% endblock %}
+
+{% block body %}
+
+    {{ include("partials/title_section.html.twig", {'name':'Passer commande'}) }}
+
+    <div class="section checkout">
+        <div class="container ">
+            {{form_start(checkout, {action: path('checkout_confirm')})}}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="container">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-home"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>    
+
+                    <div class="heading_s1">
+                            <h4 class="titrePageCommande" >Adresse de livraison</h4>
+                            <div class="content">
+                                {{ form_widget(checkout.address) | replace({'[spr]' : '<br>'}) | raw }}
+                            </div>
+     
+                                <a href="{{ path('address_new') }}" class="btn btn-fill-out mt-1 boutonAjouterAdresse btn-block">Ajouter une adresse</a>
+                    </div>
+
+
+
+
+                    <div class="container">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-info-alt"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>   
+
+                    <div class="heading_s1">
+                        <h4 class="titrePageCommande" >Informations Complémentaires</h4>
+                        <p class="pointRelais mt-5">
+                        Si vous avez choisi une livraison en point relais, merci de nous communiquer le nom et l'adresse du point relais ou vous souhaitez récupérer votre commande.
+                        </p>
+                        <div class="form-group mb-0">
+                             {{ form_widget(checkout.informations) }}
+                        </div>
+                    </div>
+            </div>
+
+            <div class="col-md-6">
+
+                    <div class="container">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-truck"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>   
+
+                    <div class="heading_s1">
+                        <h4 class="titrePageCommande" >Votre livraison</h4>
+                        <div class="content">
+                                {{ form_widget(checkout.carrier) | replace({'[spr]' : '<br>'}) | raw }}
+                        </div>
+                    </div>
+
+                    {# <div class="container">
+                        <div class="medium_divider"></div>
+                        <div class="divider center_icon"><i class="ti-shopping-bag"></i></div>
+                        <div class="medium_divider"></div>
+                    </div>   #}
+
+                    <div class="order_review">
+                        <div class="heading_s1">
+                            <h4 class="titrePageCommande">Votre commande</h4>
+                        </div>
+                        <div class="table-responsive order_table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Produits</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for element in cart.products %}
+                                        <tr>
+                                            <td> {{element.product.name}} <span class="product-qty">x {{element.quantity}}</span></td>
+                                            <td>{{(element.product.price/100) | number_format(2, '.', ' ') }} €</td>
+                                        </tr>
+                                        
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Total HT</th>
+                                        <td class="product-subtotal">{{cart.data.subTotalHT | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Taxe</th>
+                                        <td class="product-subtotal">{{cart.data.taxe | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total TTC</th>
+                                        <td class="product-subtotal">{{cart.data.subTotalTTC | number_format(2, '.', ' ') }} €</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="payment_method">
+                            {# <div class="heading_s1">
+                                <h4>Paiement</h4>
+                            </div> #}
+
+                        </div>
+                        <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Passer la commande</button>
+                    </div>
+            </div>
+             {{form_end(checkout)}}
+        </div>
+    </div>
+
+
+{% endblock %}

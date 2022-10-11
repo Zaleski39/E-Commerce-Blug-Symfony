@@ -1,0 +1,17 @@
+fos_ck_editor:
+  base_path: "bundles/fosckeditor"
+  js_path: "bundles/fosckeditor/ckeditor.js"
+  configs:
+      my_config:
+            # toolbar: full
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowseRouteParameters: []
+            extraPlugins: youtube
+  plugins:
+          youtube:
+              path:     "/bundles/fosckeditor/plugins/youtube/" # with trailing slash
+              filename: "plugin.js"
+              
+twig:
+  form_themes:
+    - "@FOSCKEditor/Form/ckeditor_widget.html.twig"
